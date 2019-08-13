@@ -11,7 +11,37 @@
 |
 */
 
-Auth::routes();
+use App\Http\Controllers\ExpenseReportBucketController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'HomeController@index')->name('home');
 
+Route::namespace('App\Http\Controllers')->group(function() {
+    Auth::routes();
+});
+
+/**
+ * Authenticated routes
+ */
+Route::group(['middleware' => 'auth'], function() {
+    /**
+     * Home Route
+     */
+    Route::get('/', HomeController::class)->name('home');
+
+
+    /**
+     * Expense Report Routes
+     * @routeName expense-report.
+     */
+    Route::group([
+        'as' => 'expense-report.',
+    ], function() {
+        /**
+         * Expense Report Bucket Routes
+         * @routeName buckets.
+         * @routePrefix buckets/
+         */
+        Route::resource('buckets', ExpenseReportBucketController::class);
+    });
+});
