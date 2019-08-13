@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Expense Report Bucket relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function buckets()
+    {
+        return $this->hasMany(ExpenseReportBucket::class);
+    }
 }
