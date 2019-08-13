@@ -44,6 +44,23 @@
             </div>
         </nav>
 
+        @if(session('flash'))
+            @php
+                if (session('flash.type') === 'success') {
+                    $classes = 'bg-green-200 text-green-900 border-green-700';
+                } else if (session('flash.type') === 'danger') {
+                    $classes = 'bg-red-200 text-red-900 border-red-700';
+                } else if (session('flash.type') === 'warning') {
+                    $classes = 'bg-yellow-300 text-yellow-900 border-yellow-500';
+                } else {
+                    $classes = 'bg-blue-200 text-blue-900 border-blue-700';
+                }
+            @endphp
+            <div class="font-semibold w-full max-w-xl rounded-b border-t-8 mb-8 mx-auto py-3 px-4 {{ $classes }}">
+                {{ session('flash.message') }}
+            </div>
+        @endif
+
         @yield('content')
     </div>
 
