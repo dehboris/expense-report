@@ -6,9 +6,10 @@
             <h1 class="text-3xl text-center -mb-4">{{ ucwords($bucket->name) }}</h1>
             <p class="text-xl font-semibold text-gray-600 text-center">{{ $bucket->description }}</p>
 
-            <div class="flex justify-end">
+            <div class="flex">
+                <a class="text-red-800 mr-auto hover:underline" href="{{ route('expense-report.buckets.index') }}">Back</a>
                 <a class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-3" href="{{ route('expense-report.buckets.edit', $bucket) }}">Edit</a>
-                <a class="font-bold bg-red-600 text-gray-100 rounded px-2 transition-fast hover:bg-red-700" href="#">Delete</a>
+                @livewire('modal', $bucket)
             </div>
         </div>
 
@@ -169,5 +170,7 @@
 {{--                </div>--}}
 {{--            @endforelse--}}
         </div>
+
+{{--        @livewire('modal')--}}
     </div>
 @endsection
