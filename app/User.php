@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\ExpenseReport\Bucket;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -54,6 +55,6 @@ class User extends Authenticatable
      */
     public function buckets()
     {
-        return $this->hasMany(ExpenseReportBucket::class);
+        return $this->hasMany(Bucket::class);
     }
 }

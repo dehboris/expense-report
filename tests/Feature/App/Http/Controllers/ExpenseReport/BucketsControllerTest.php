@@ -1,20 +1,20 @@
 <?php
 
-namespace Tests\Feature\App\Http\Controllers;
+namespace Tests\Feature\App\Http\Controllers\ExpenseReport;
 
-use App\ExpenseReportBucket;
+use App\ExpenseReport\Bucket;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExpenseReportBucketControllerTest extends TestCase
+class BucketsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function bucket_belongs_to_user()
     {
-        $bucket = factory(ExpenseReportBucket::class)->create();
+        $bucket = factory(Bucket::class)->create();
 
         $this->assertInstanceOf(User::class, $bucket->owner);
     }
@@ -39,7 +39,7 @@ class ExpenseReportBucketControllerTest extends TestCase
     {
         $this->be($user = factory(User::class)->create());
 
-        $bucket = factory(ExpenseReportBucket::class)->make();
+        $bucket = factory(Bucket::class)->make();
 
         $this->get(route('expense-report.buckets.create'))
             ->assertViewIs('expense-report.buckets.create')
@@ -66,15 +66,15 @@ class ExpenseReportBucketControllerTest extends TestCase
         $this->be($jon = factory(User::class)->create());
 
         $jons_buckets = [
-            factory(ExpenseReportBucket::class)->create(['user_id' => $jon->id]),
-            factory(ExpenseReportBucket::class)->create(['user_id' => $jon->id]),
-            factory(ExpenseReportBucket::class)->create(['user_id' => $jon->id]),
+            factory(Bucket::class)->create(['user_id' => $jon->id]),
+            factory(Bucket::class)->create(['user_id' => $jon->id]),
+            factory(Bucket::class)->create(['user_id' => $jon->id]),
         ];
 
         $janes_buckets = [
-            factory(ExpenseReportBucket::class)->create(['user_id' => $jane->id]),
-            factory(ExpenseReportBucket::class)->create(['user_id' => $jane->id]),
-            factory(ExpenseReportBucket::class)->create(['user_id' => $jane->id]),
+            factory(Bucket::class)->create(['user_id' => $jane->id]),
+            factory(Bucket::class)->create(['user_id' => $jane->id]),
+            factory(Bucket::class)->create(['user_id' => $jane->id]),
         ];
 
         $this->get(route('expense-report.buckets.index'))
@@ -94,7 +94,7 @@ class ExpenseReportBucketControllerTest extends TestCase
         $jane = factory(User::class)->create();
         $this->be($jon = factory(User::class)->create());
 
-        $janes_bucket =factory(ExpenseReportBucket::class)->create(['user_id' => $jane->id]);
+        $janes_bucket =factory(Bucket::class)->create(['user_id' => $jane->id]);
 
         $this->get(route('expense-report.buckets.show', $janes_bucket))
             ->assertRedirect(route('expense-report.buckets.index'))
@@ -109,7 +109,7 @@ class ExpenseReportBucketControllerTest extends TestCase
     {
         $this->be($jon = factory(User::class)->create());
 
-        $jons_bucket = factory(ExpenseReportBucket::class)->create(['user_id' => $jon->id]);
+        $jons_bucket = factory(Bucket::class)->create(['user_id' => $jon->id]);
 
         $this->get(route('expense-report.buckets.show', $jons_bucket))
             ->assertOk()
@@ -122,7 +122,7 @@ class ExpenseReportBucketControllerTest extends TestCase
         $jane = factory(User::class)->create();
         $this->be($jon = factory(User::class)->create());
 
-        $janes_bucket =factory(ExpenseReportBucket::class)->create(['user_id' => $jane->id]);
+        $janes_bucket =factory(Bucket::class)->create(['user_id' => $jane->id]);
 
         $this->get(route('expense-report.buckets.edit', $janes_bucket))
             ->assertRedirect(route('expense-report.buckets.index'))
@@ -144,7 +144,7 @@ class ExpenseReportBucketControllerTest extends TestCase
     {
         $this->be($jon = factory(User::class)->create());
 
-        $jons_bucket = factory(ExpenseReportBucket::class)->create(['user_id' => $jon->id]);
+        $jons_bucket = factory(Bucket::class)->create(['user_id' => $jon->id]);
 
         $this->get(route('expense-report.buckets.edit', $jons_bucket))
             ->assertOk()
@@ -173,7 +173,7 @@ class ExpenseReportBucketControllerTest extends TestCase
         $jane = factory(User::class)->create();
         $this->be($jon = factory(User::class)->create());
 
-        $janes_bucket =factory(ExpenseReportBucket::class)->create(['user_id' => $jane->id]);
+        $janes_bucket =factory(Bucket::class)->create(['user_id' => $jane->id]);
 
         $this->delete(route('expense-report.buckets.destroy', $janes_bucket))
             ->assertRedirect(route('expense-report.buckets.index'))
@@ -188,7 +188,7 @@ class ExpenseReportBucketControllerTest extends TestCase
     {
         $this->be($jon = factory(User::class)->create());
 
-        $jons_bucket =factory(ExpenseReportBucket::class)->create(['user_id' => $jon->id]);
+        $jons_bucket =factory(Bucket::class)->create(['user_id' => $jon->id]);
 
         $this->delete(route('expense-report.buckets.destroy', $jons_bucket))
             ->assertRedirect(route('expense-report.buckets.index'))

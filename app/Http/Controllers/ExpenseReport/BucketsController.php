@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ExpenseReport;
 
 use App\ExpenseReport\Bucket;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ExpenseReportBucketController extends Controller
+class BucketsController extends Controller
 {
     /**
      * Display a listing of the resource.

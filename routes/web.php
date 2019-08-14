@@ -11,7 +11,7 @@
 |
 */
 
-use App\Http\Controllers\ExpenseReportBucketController;
+use App\Http\Controllers\ExpenseReport\BucketsController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +42,6 @@ Route::group(['middleware' => 'auth'], function() {
          * @routeName buckets.
          * @routePrefix buckets/
          */
-        Route::resource('buckets', ExpenseReportBucketController::class);
+        Route::resource('buckets', BucketsController::class);
     });
 });

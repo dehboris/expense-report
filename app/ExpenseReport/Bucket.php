@@ -2,6 +2,7 @@
 
 namespace App\ExpenseReport;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,8 +11,10 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property \App\User $owner
  */
-class ExpenseReportBucket extends Model
+class Bucket extends Model
 {
+    protected $table = 'expense_report_buckets';
+
     protected $guarded = [];
 
     /**
