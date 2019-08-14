@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ExpenseReportBucket;
+use App\ExpenseReport\Bucket;
 use Illuminate\Http\Request;
 
 class ExpenseReportBucketController extends Controller
@@ -45,7 +45,7 @@ class ExpenseReportBucketController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        ExpenseReportBucket::create(array_merge(
+        Bucket::create(array_merge(
             [ 'user_id' => $request->user()->id ],
             $request->only('name', 'description')
         ));
@@ -61,11 +61,11 @@ class ExpenseReportBucketController extends Controller
      * Display the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpenseReportBucket  $bucket
+     * @param  \App\ExpenseReport\Bucket  $bucket
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, ExpenseReportBucket $bucket)
+    public function show(Request $request, Bucket $bucket)
     {
         if ((int) $bucket->owner->id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
@@ -85,11 +85,11 @@ class ExpenseReportBucketController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpenseReportBucket  $bucket
+     * @param  \App\ExpenseReport\Bucket  $bucket
      *
      * @return void
      */
-    public function edit(Request $request, ExpenseReportBucket $bucket)
+    public function edit(Request $request, Bucket $bucket)
     {
         if ((int) $bucket->owner->id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
@@ -109,10 +109,10 @@ class ExpenseReportBucketController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpenseReportBucket  $bucket
+     * @param  \App\ExpenseReport\Bucket  $bucket
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ExpenseReportBucket $bucket)
+    public function update(Request $request, Bucket $bucket)
     {
         if ((int) $bucket->owner->id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
@@ -140,12 +140,12 @@ class ExpenseReportBucketController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpenseReportBucket  $bucket
+     * @param  \App\ExpenseReport\Bucket  $bucket
      *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Request $request, ExpenseReportBucket $bucket)
+    public function destroy(Request $request, Bucket $bucket)
     {
         if ((int) $bucket->owner->id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
