@@ -19,6 +19,11 @@ class CreateExpenseReportBucketsTable extends Migration
             $table->string('name', 100);
             $table->string('description', 255);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
