@@ -68,7 +68,7 @@ class BucketsController extends Controller
      */
     public function show(Request $request, Bucket $bucket)
     {
-        if ((int) $bucket->owner->id !== (int) $request->user()->id) {
+        if ((int) $bucket->user_id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
                 ->with('flash', [
                     'type' => 'danger',
@@ -76,10 +76,9 @@ class BucketsController extends Controller
                 ]);
         }
 
-        return view('expense-report.buckets.show')
-            ->with([
-                'bucket' => $bucket,
-            ]);
+        return view('expense-report.buckets.show', [
+            'bucket' => $bucket,
+        ]);
     }
 
     /**
@@ -92,7 +91,7 @@ class BucketsController extends Controller
      */
     public function edit(Request $request, Bucket $bucket)
     {
-        if ((int) $bucket->owner->id !== (int) $request->user()->id) {
+        if ((int) $bucket->user_id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
                 ->with('flash', [
                     'type' => 'danger',
@@ -115,7 +114,7 @@ class BucketsController extends Controller
      */
     public function update(Request $request, Bucket $bucket)
     {
-        if ((int) $bucket->owner->id !== (int) $request->user()->id) {
+        if ((int) $bucket->user_id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
                 ->with('flash', [
                     'type' => 'danger',
@@ -148,7 +147,7 @@ class BucketsController extends Controller
      */
     public function destroy(Request $request, Bucket $bucket)
     {
-        if ((int) $bucket->owner->id !== (int) $request->user()->id) {
+        if ((int) $bucket->user_id !== (int) $request->user()->id) {
             return redirect(route('expense-report.buckets.index'))
                 ->with('flash', [
                     'type' => 'danger',
