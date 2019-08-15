@@ -1,6 +1,4 @@
 <div>
-    <button class="font-bold bg-red-600 text-gray-100 rounded px-2 transition-fast hover:bg-red-700" wire:click="toggle">Delete</button>
-
     @if($isOpen)
         <div class="fixed top-0 left-0 w-screen h-screen bg-black opacity-50 z-40" wire:click="toggle"></div>
 
@@ -19,11 +17,7 @@
 
                 <div class="flex p-6">
                     <button class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-auto" wire:click="toggle">Cancel</button>
-                    <form action="{{ route('expense-report.buckets.destroy', $bucket) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="text-red-600 hover:underline" type="submit">Delete</button>
-                    </form>
+                    <button class="text-red-600 hover:underline" wire:click="submit">Delete</button>
                 </div>
             </div>
         </div>
