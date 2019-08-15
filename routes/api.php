@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExpenseReport\BucketItemsController;
 use App\Http\Controllers\ExpenseReport\BucketsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,12 +19,23 @@ Route::middleware('auth')->group(function() {
          * @routeName buckets.
          * @routePrefix buckets/
          */
-        Route::as('buckets.')->group(function() {
+        Route::prefix('buckets')->as('buckets.')->group(function() {
             Route::get('', [BucketsController::class, 'index'])->name('index');
             Route::post('', [BucketsController::class, 'store'])->name('store');
             Route::get('{bucket}', [BucketsController::class, 'show'])->name('show');
             Route::patch('{bucket}', [BucketsController::class, 'update'])->name('update');
             Route::delete('{bucket}', [BucketsController::class, 'destroy'])->name('destroy');
+
+            /**
+             * Expense Report Bucket Items Routes
+             * @routeName buckets.items.
+             * @routePrefix buckets/{bucket}/items/
+             */
+            Route::as('items.')->group(function() {
+                Route::get('{bucket}/items', [BucketItemsController::class, 'index'])->name('index');
+                Route::post('{bucket}/items', [BucketItemsController::class, 'store'])->name('store');
+                Route::delete('{bucket}/items/{bucketItem}', [BucketItemsController::class, 'destroy'])->name('destroy');
+            });
         });
     });
 });
