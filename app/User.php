@@ -4,7 +4,6 @@ namespace App;
 
 use App\ExpenseReport\Bucket;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -15,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $name
  * @property string $email
  * @property \Carbon\CarbonImmutable $created_at
- * * @property \Carbon\CarbonImmutable $updated_at
+ * @property \Carbon\CarbonImmutable $updated_at
  */
 class User extends Authenticatable
 {
