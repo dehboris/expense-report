@@ -13,6 +13,6 @@ class HomeController extends Controller
      */
     public function __invoke()
     {
-        return app()->call('App\Http\Controllers\ExpenseReportBucketController@index');
+        return app()->call('App\Http\Controllers\ExpenseReport\BucketsController@index');
     }
 }
