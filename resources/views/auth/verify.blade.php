@@ -12,7 +12,7 @@
                 @endif
 
                 <div class="flex flex-col break-words bg-white border border-2 rounded shadow-md">
-                    <div class="font-semibold bg-gray-200 text-gray-700 py-3 px-6 mb-0">
+                    <div class="font-semibold bg-gray-100 text-gray-700 py-3 px-6 mb-0">
                         {{ __('Verify Your Email Address') }}
                     </div>
 
@@ -21,7 +21,7 @@
                             {{ __('Before proceeding, please check your email for a verification link.') }}
                         </p>
 
-                        <a class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline no-underline mx-auto" href="{{ route('verification.resend') }}">
+                        <a class="bg-teal-700 hover:bg-teal-800 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline no-underline mx-auto" href="{{ route('verification.resend') }}">
                             {{ __('Resend verification email') }}
                         </a>
                     </div>

@@ -13,7 +13,7 @@
 
                 <div class="flex flex-col break-words bg-white border border-2 rounded shadow-md">
 
-                    <div class="font-semibold bg-gray-200 text-gray-700 py-2 px-4 mb-0">
+                    <div class="font-semibold bg-gray-100 text-gray-700 py-2 px-4 mb-0">
                         {{ __('Reset Password') }}
                     </div>
 
@@ -35,12 +35,12 @@
                         </div>
 
                         <div class="flex flex-wrap">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit" class="bg-teal-700 hover:bg-teal-800 text-gray-100 font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
                                 {{ __('Send Password Reset Link') }}
                             </button>
 
                             <p class="w-full text-xs text-center text-grey-dark mt-8 -mb-4">
-                                <a class="text-blue-500 hover:text-blue-700 no-underline" href="{{ route('login') }}">
+                                <a class="text-teal-700 hover:text-teal-800 no-underline" href="{{ route('login') }}">
                                     Back to login
                                 </a>
                             </p>

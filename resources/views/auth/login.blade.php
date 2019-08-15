@@ -6,7 +6,7 @@
             <div class="w-full max-w-sm">
                 <div class="flex flex-col break-words bg-white border border-2 rounded shadow-md">
 
-                    <div class="font-semibold bg-gray-200 text-gray-700 py-2 px-6 mb-0">
+                    <div class="font-semibold bg-gray-100 text-gray-700 py-2 px-6 mb-0">
                         {{ __('Login') }}
                     </div>
 
@@ -50,12 +50,12 @@
                         </div>
 
                         <div class="flex flex-wrap items-center">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit" class="bg-teal-700 hover:bg-teal-800 text-gray-100 font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
                                 {{ __('Login') }}
                             </button>
 
                             @if (Route::has('password.request'))
-                                <a class="text-sm text-blue-500 hover:text-blue-700 whitespace-no-wrap no-underline ml-auto" href="{{ route('password.request') }}">
+                                <a class="text-sm text-teal-700 hover:text-teal-800 whitespace-no-wrap no-underline ml-auto" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             @endif
@@ -63,7 +63,7 @@
                             @if (Route::has('register'))
                                 <p class="w-full text-xs text-center text-gray-700 mt-8 -mb-4">
                                     Don't have an account?
-                                    <a class="text-blue-500 hover:text-blue-700 no-underline" href="{{ route('register') }}">
+                                    <a class="text-teal-700 hover:text-teal-800 no-underline" href="{{ route('register') }}">
                                         Register
                                     </a>
                                 </p>
