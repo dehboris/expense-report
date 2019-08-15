@@ -5,12 +5,12 @@
     <h1 class="text-3xl text-center md:mb-10">Your Buckets</h1>
 
     <div class="flex flex-wrap justify-center p-4 sm:shadow-lg sm:p-10">
-        <div class="w-full mb-10 md:w-5/6 lg:w-4/5">
-            <a class="font-bold bg-blue-700 text-gray-100 rounded py-2 px-3 transition-fast hover:bg-blue-800" href="{{ route('expense-report.buckets.create') }}">New Bucket</a>
-        </div>
-
         @if($buckets->count() > 0)
-            <div class="w-full hidden sm:flex font-bold border-b-2 border-gray-400 md:w-5/6 md:px-4 lg:w-4/5">
+            <div class="w-full mb-10 md:w-5/6">
+                <a class="font-bold bg-blue-700 text-gray-100 rounded py-2 px-3 transition-fast hover:bg-blue-800" href="{{ route('expense-report.buckets.create') }}">New Bucket</a>
+            </div>
+
+            <div class="w-full hidden sm:flex font-bold border-b-2 border-gray-400 md:w-5/6 md:px-4">
                 <p class="w-4/12">Name</p>
                 <p class="w-6/12">Description</p>
                 <p class="w-2/12 text-right">Balance</p>
@@ -18,7 +18,7 @@
         @endif
 
         @forelse($buckets as $bucket)
-            <a class="w-full flex flex-wrap border-b-2 py-2{{ $loop->last ? ' md:border-none' : '' }} md:w-5/6 md:px-4 lg:w-4/5" href="{{ route('expense-report.buckets.show', $bucket) }}">
+            <a class="w-full flex flex-wrap border-b-2 py-2{{ $loop->last ? ' md:border-none' : '' }} md:w-5/6 md:px-4" href="{{ route('expense-report.buckets.show', $bucket) }}">
                 <p class="w-full sm:w-4/12 font-semibold text-blue-700 pr-1 sm:pr-0 hover:underline">
                     <span class="font-bold sm:hidden text-gray-900">Name:</span>
                     {{ $bucket->name }}
@@ -27,10 +27,16 @@
                     <span class="font-bold sm:hidden">Description:</span>
                     {{ $bucket->description }}
                 </p>
-                <p class="w-full sm:w-2/12 sm:text-right">
+                <div class="w-full sm:flex sm:self-center sm:justify-between sm:w-2/12 sm:text-right">
                     <span class="font-bold sm:hidden">Balance:</span>
-                    $ 1000
-                </p>
+                    <span class="inline-block pl-4">$</span>
+                    @php
+                    $balance = $bucket->balance
+                    @endphp
+                    <span class="tracking-wide{{ $balance->isNegative() ? ' text-red-700' : null }}{{ $balance->isPositive() ? ' text-green-700' : null }}">
+                        {{ str_replace('$', '', str_replace('-', '', $balance)) }}
+                    </span>
+                </div>
             </a>
         @empty
             <div class="w-full flex flex-wrap items-center mt-2">
