@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
  * @property string $description
  * @property \Carbon\CarbonImmutable $created_at
  * @property \Carbon\CarbonImmutable $updated_at
- * @property \App\User $owner
+ * @property \App\User $user_id
  * @property \App\ExpenseReport\BucketItem $items
  */
 class Bucket extends Model
