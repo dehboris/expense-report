@@ -6,14 +6,14 @@
             <div class="w-full max-w-sm">
                 <div class="flex flex-col break-words bg-white border border-2 rounded shadow-md">
 
-                    <div class="font-semibold bg-gray-200 text-gray-700 py-3 px-6 mb-0">
+                    <div class="font-semibold bg-gray-200 text-gray-700 py-2 px-6 mb-0">
                         {{ __('Login') }}
                     </div>
 
-                    <form class="w-full p-6" method="POST" action="{{ route('login') }}">
+                    <form class="w-full py-4 px-6" method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="flex flex-wrap mb-6">
+                        <div class="flex flex-wrap mb-4">
                             <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
                                 {{ __('E-Mail Address') }}:
                             </label>
@@ -27,7 +27,7 @@
                             @endif
                         </div>
 
-                        <div class="flex flex-wrap mb-6">
+                        <div class="flex flex-wrap mb-4">
                             <label for="password" class="block text-gray-700 text-sm font-bold mb-2">
                                 {{ __('Password') }}:
                             </label>
@@ -41,7 +41,7 @@
                             @endif
                         </div>
 
-                        <div class="flex mb-6">
+                        <div class="flex items-center mb-6">
                             <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                             <label class="text-sm text-gray-700 ml-3" for="remember">
@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="flex flex-wrap items-center">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
                                 {{ __('Login') }}
                             </button>
 
