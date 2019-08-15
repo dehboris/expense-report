@@ -9,7 +9,6 @@ use Livewire\Component;
 class Show extends Component
 {
     public $bucket;
-    public $balance;
 
     public $name;
     public $amount;
@@ -20,7 +19,6 @@ class Show extends Component
     public function mount(Bucket $bucket)
     {
         $this->bucket = $bucket;
-        $this->balance = $this->getBalance();
     }
 
     public function render()
@@ -56,20 +54,5 @@ class Show extends Component
     public function updateBucket($bucket_id)
     {
         $this->bucket = Bucket::find($bucket_id);
-        $this->balance = $this->getBalance();
-    }
-
-    public function getBalance()
-    {
-        $amount = is_array($this->bucket) ? $this->bucket['balance']['amount'] : $this->bucket['balance']->getAmount();
-
-        $wholeDollar = substr($amount, 0, \Illuminate\Support\Str::length($amount) - 2);
-        $cents = substr($amount, \Illuminate\Support\Str::length($amount) - 2);
-        $cents = $cents == 0 ? '00' : $cents;
-
-        return [
-            'amount' => $amount,
-            'formatted' => ltrim(number_format((int) $wholeDollar) . '.' . $cents, '-'),
-        ];
     }
 }

@@ -51,8 +51,15 @@
             <div class="w-full flex justify-end border-b-2 border-gray-400 pb-3 mb-3 md:px-4">
                 <span>Balance:</span>
                 <span class="inline-block px-2">$</span>
-                <span wire:transition.fade.150ms class="tracking-wide{{ $balance['amount'] < 0 ? ' text-red-700' : null }}{{ $balance['amount'] > 0 ? ' text-green-700' : null }}">
-                    {{ $balance['formatted'] }}
+                @php
+                    $amount = is_array($bucket) ? $bucket['balance']['amount'] : $bucket['balance']->getAmount();
+
+                    $wholeDollar = substr($amount, 0, \Illuminate\Support\Str::length($amount) - 2);
+                    $cents = substr($amount, \Illuminate\Support\Str::length($amount) - 2);
+                    $cents = $cents == 0 ? '00' : $cents;
+                @endphp
+                <span wire:transition.fade.150ms class="tracking-wide{{ $amount < 0 ? ' text-red-700' : null }}{{ $amount > 0 ? ' text-green-700' : null }}">
+                    {{ ltrim(number_format((int) $wholeDollar) . '.' . $cents, '-') }}
                 </span>
             </div>
         @endif
