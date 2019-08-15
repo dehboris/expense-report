@@ -7,8 +7,12 @@ use Faker\Generator as Faker;
 
 $factory->define(Bucket::class, function (Faker $faker) {
     return [
-        'user_id' => factory(\App\User::class)->create(),
+        'user_id' => function() {
+            return factory(\App\User::class)->create()->id;
+        },
         'name' => $faker->words(rand(1, 5), true),
         'description' => $faker->sentence,
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
