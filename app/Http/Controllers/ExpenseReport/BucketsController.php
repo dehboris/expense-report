@@ -32,13 +32,14 @@ class BucketsController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        Bucket::create(array_merge(
+        $bucket = Bucket::create(array_merge(
             [ 'user_id' => $request->user()->id ],
             $request->only('name', 'description')
         ));
 
         return response()->json([
             'status' => 'ok',
+            'data' => $bucket,
         ], 200);
     }
 

@@ -53,6 +53,10 @@ class BucketsControllerTest extends TestCase
             ->assertOk()
             ->assertJson([
                 'status' => 'ok',
+                'data' => [
+                    'name' => $bucket->name,
+                    'description' => $bucket->description,
+                ],
             ]);
 
         $this->assertDatabaseHas('expense_report_buckets', [
