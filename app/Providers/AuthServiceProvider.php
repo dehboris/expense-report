@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\ExpenseReport\Bucket;
+use App\ExpenseReport\BucketItem;
+use App\Policies\BucketItemPolicy;
 use App\Policies\BucketPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -15,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-         Bucket::class => BucketPolicy::class,
+        Bucket::class => BucketPolicy::class,
+        BucketItem::class => BucketItemPolicy::class,
     ];
 
     /**

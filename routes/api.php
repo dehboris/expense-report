@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function() {
             Route::as('items.')->group(function() {
                 Route::get('{bucket}/items', [BucketItemsController::class, 'index'])->name('index');
                 Route::post('{bucket}/items', [BucketItemsController::class, 'store'])->name('store');
-                Route::delete('{bucket}/items/{bucketItem}', [BucketItemsController::class, 'destroy'])->name('destroy');
+                Route::delete('items/{bucketItem}', [BucketItemsController::class, 'destroy'])->name('destroy');
             });
         });
     });

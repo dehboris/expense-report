@@ -39,6 +39,8 @@ class BucketItem extends Model
     }
 
     /**
+     * @param $value
+     *
      * @return \Cknow\Money\Money
      */
     public function getAmountAttribute($value)
