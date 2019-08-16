@@ -24,6 +24,8 @@
   export default {
     name: "App",
 
+    components: { FlashMessage },
+
     data() {
       return {
         showFlash: false,
