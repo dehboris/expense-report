@@ -11,8 +11,9 @@
 
         <!-- Styles -->
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+        @routes
     </head>
-    <body class="bg-gray-100 h-screen antialiased leading-loose">
+    <body class="bg-gray-100 text-gray-800 h-screen antialiased leading-loose">
         @include('nav')
         <div id="app"></div>
 
