@@ -1,11 +1,16 @@
 <template>
   <transition
-    name="fade"
+    enter-active-class="transition-slow"
+    enter-to-class="opacity-100 mr-0"
+    enter-class="opacity-0 -mr-6"
+    leave-active-class="transition-slow"
+    leave-class="opacity-100 mr-0"
+    leave-to-class="opacity-0 -mr-6"
     mode="out-in"
   >
     <div
       v-if="showAlert"
-      :class="['fixed right-0 top-0 max-w-sm rounded shadow-md px-4 py-3 mt-24 w-64 md:w-auto', 'alert-' + status]"
+      :class="['fixed right-0 top-0 max-w-sm font-semibold rounded-lg shadow-md px-4 py-3 mt-24 w-64 md:w-auto', 'text-' + type + '-800', 'bg-' + type + '-200']"
       role="alert"
     >
       <div class="flex">
@@ -43,16 +48,30 @@
     data() {
       return {
         showAlert: true,
+        type: '',
       }
     },
 
     created() {
+      this.setClasses();
       setTimeout(() => {
         this.hide();
       }, 4000)
     },
 
     methods: {
+      setClasses() {
+        if (this.status === 'success') {
+          this.type = 'green';
+        } else if (this.status === 'danger') {
+          this.type = 'red';
+        } else if (this.status === 'warning') {
+          this.type = 'yellow';
+        } else {
+          this.type = 'blue';
+        }
+      },
+
       hide() {
         this.$emit('hide');
         this.showAlert = false;
@@ -60,12 +79,3 @@
     },
   }
 </script>
-
-<style scoped>
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .6s;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
-    }
-</style>
