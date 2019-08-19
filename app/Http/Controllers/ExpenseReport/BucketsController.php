@@ -82,6 +82,7 @@ class BucketsController extends Controller
 
         return response()->json([
             'status' => 'ok',
+            'data' => $bucket,
         ], 200);
     }
 

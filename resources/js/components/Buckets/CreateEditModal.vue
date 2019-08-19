@@ -25,7 +25,9 @@
 
       <div class="flex p-6">
         <button class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-auto" @click="close" :disabled="submitting">Cancel</button>
-        <button class="font-bold bg-green-600 text-gray-100 rounded px-2 transition-fast hover:bg-green-700" @click="submit" :disabled="submitting">Create</button>
+        <button class="font-bold bg-green-600 text-gray-100 rounded px-2 transition-fast hover:bg-green-700" @click="submit" :disabled="submitting">
+          {{ Object.keys(bucket).length > 0 ? 'Update' : 'Create' }}
+        </button>
       </div>
     </div>
   </div>
@@ -49,6 +51,13 @@
         description: null,
         submitting: false,
         errors: {},
+      }
+    },
+
+    created() {
+      if (Object.keys(this.bucket).length > 0) {
+        this.name = this.bucket.name;
+        this.description = this.bucket.description;
       }
     },
 
@@ -84,12 +93,37 @@
               this.errors = error.response.data.errors;
               this.submitting = false;
             } else {
-              this.$root.$emit('flash', 'danger', 'We\'re experiencing trouble creating buckets at this time.')
+              this.submitting = false;
+              this.$parent.$emit('flash', 'danger', 'We\'re experiencing trouble creating buckets at this time.')
             }
+
+            this.close();
           })
       },
 
-      updateBucket() {},
+      updateBucket() {
+        axios.patch(route('api.expense-report.buckets.update', this.bucket.id).url(), {
+          name: this.name,
+          description: this.description,
+        })
+          .then(response => {
+            this.submitting = false;
+            this.$emit('updateBucket', response.data.data);
+            this.$parent.$emit('flash', 'success', 'Bucket updated successfully.');
+            this.close();
+          })
+          .catch(error => {
+            if (error.response.status === 422) {
+              this.errors = error.response.data.errors;
+              this.submitting = false;
+            } else {
+              this.$parent.$emit('flash', 'danger', 'We\'re experiencing trouble updating buckets at this time.')
+              this.submitting = false;
+            }
+
+            this.close();
+          })
+      },
     },
   }
 </script>
