@@ -10,7 +10,13 @@
   >
     <div
       v-if="showAlert"
-      :class="['fixed right-0 top-0 max-w-sm font-semibold rounded-lg shadow-md px-4 py-3 mt-24 w-64 md:w-auto', 'text-' + type + '-800', 'bg-' + type + '-200']"
+      :class="[
+        'fixed right-0 top-0 max-w-sm font-semibold rounded-lg shadow-md px-4 py-3 mt-24 w-64 md:w-auto',
+        status === 'success' ? 'bg-green-200 text-green-800' : '',
+        status === 'warning' ? 'bg-yellow-200 text-yellow-800' : '',
+        status === 'info' ? 'bg-blue-200 text-blue-800' : '',
+        status === 'danger' ? 'bg-red-200 text-red-800' : '',
+      ]"
       role="alert"
     >
       <div class="flex">
