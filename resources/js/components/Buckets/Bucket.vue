@@ -50,9 +50,8 @@
         <div class="w-full flex justify-end border-b-2 border-gray-400 pb-3 mb-3 md:px-4">
           <span>Balance:</span>
           <span class="inline-block px-2">$</span>
-          <span :class="['tracking-wide', { 'text-red-700' : bucket.balance.amount < 0 }, { 'text-green-700' : bucket.balance.amount > 0 }]">
-<!--            {{ bucket.balance.formatted.replace(/\$*\-*/g, '') }}-->
-            {{ calculated_balance.format('0,0.00') }}
+          <span :class="['tracking-wide', { 'text-red-700' : calculated_balance < 0 }, { 'text-green-700' : calculated_balance > 0 }]">
+            {{ calculated_balance.format('0,0.00').replace('-', '') }}
           </span>
         </div>
 
