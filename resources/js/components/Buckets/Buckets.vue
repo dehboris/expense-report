@@ -17,13 +17,13 @@
           </div>
 
           <transition-group
-              tag="div"
-              class="w-full flex flex-wrap justify-center"
-              enter-active-class="transition-fast opacity-100"
-              enter-class="-mt-16"
-              leave-active-class="transition-fast opacity-100"
-              leave-to-class="opacity-0 -mt-16"
-              mode="out-in">
+            tag="div"
+            class="w-full flex flex-wrap justify-center"
+            enter-active-class="transition-fast opacity-100"
+            enter-class="-mt-16"
+            leave-active-class="transition-fast opacity-100"
+            leave-to-class="opacity-0 -mt-16"
+            mode="out-in">
             <bucket-list-item
               v-for="bucket in buckets.data"
               :key="bucket.id"

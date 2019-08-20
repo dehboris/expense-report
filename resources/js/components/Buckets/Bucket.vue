@@ -42,7 +42,7 @@
         </div>
 
           <div class="w-full flex justify-end md:w-2/12 md:px-3 self-end">
-            <button :class="['transition-normal bg-green-600 text-gray-100 font-semibold rounded py-1 px-3 hover:bg-green-700', { 'cursor-not-allowed': form.submitting }]" :disabled="form.submitting" @click="createExpenseItem">Create</button>
+            <button :class="['transition-normal bg-teal-600 text-gray-100 font-semibold rounded py-1 px-3 hover:bg-teal-700', { 'cursor-not-allowed': form.submitting }]" :disabled="form.submitting" @click="createExpenseItem">Create</button>
           </div>
       </div>
 
@@ -50,19 +50,19 @@
         <div class="w-full flex justify-end border-b-2 border-gray-400 pb-3 mb-3 md:px-4">
           <span>Balance:</span>
           <span class="inline-block px-2">$</span>
-          <span :class="['tracking-wide', { 'text-red-700' : calculated_balance < 0 }, { 'text-green-700' : calculated_balance > 0 }]">
+          <span :class="['tracking-wide', { 'text-red-700' : calculated_balance['_value'] < 0 }, { 'text-green-700' : calculated_balance['_value'] > 0 }]">
             {{ calculated_balance.format('0,0.00').replace('-', '') }}
           </span>
         </div>
 
         <transition-group
-            tag="div"
-            class="w-full flex flex-wrap justify-center"
-            enter-active-class="transition-fast opacity-100"
-            enter-class="-mt-16"
-            leave-active-class="transition-fast opacity-100"
-            leave-to-class="opacity-0 -mt-16"
-            mode="out-in">
+          tag="div"
+          class="w-full flex flex-wrap justify-center"
+          enter-active-class="transition-fast opacity-100"
+          enter-class="-mt-16"
+          leave-active-class="transition-fast opacity-100"
+          leave-to-class="opacity-0 -mt-16"
+          mode="out-in">
           <bucket-expense-item
             v-for="item in bucket.items.data"
             :key="item.id"
@@ -152,7 +152,10 @@
             this.loading = false;
           }))
           .catch(error => {
-            console.log(error.data);
+            if (error.response.status === 403) {
+              this.$emit('flash', 'danger', 'You do not have access to this bucket.');
+              this.$router.push('/');
+            }
           })
       },
 
@@ -200,7 +203,6 @@
         })
 
         this.bucket.items.data.splice(index, 1);
-        // console.log(this.current_balance, item.amount / 100);
         if (item.type === 'credit') {
           this.calculated_balance = this.calculated_balance.subtract(item.amount.amount / 100);
         } else {

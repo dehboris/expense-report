@@ -1,6 +1,6 @@
 <template>
   <router-link class="w-full flex flex-wrap border-b-2 py-2 md:w-5/6 md:px-4" :to="`buckets/${bucket.id}`">
-    <p class="w-full sm:w-4/12 font-semibold text-blue-700 pr-1 sm:pr-0 hover:underline">
+    <p class="w-full sm:w-4/12 font-semibold text-teal-700 pr-1 sm:pr-0 hover:underline">
       <span class="font-bold sm:hidden text-gray-900">Name:</span>
       {{ bucket.name }}
     </p>
