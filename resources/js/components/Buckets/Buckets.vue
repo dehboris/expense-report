@@ -164,27 +164,7 @@
 
       </div>
 
-      <transition
-        enter-active-class="transition-fast"
-        enter-class=" opacity-0 -mt-16"
-        enter-to-class="opacity-100"
-        leave-active-class="transition-fast"
-        leave-class="opacity-100"
-        leave-to-class="opacity-0 -mt-16"
-        mode="out-in">
-        <create-edit-modal v-if="modalIsOpen" @newBucket="addNewBucket" @close="modalIsOpen = false"/>
-      </transition>
-
-      <transition
-        enter-active-class="transition-fast"
-        enter-class=" opacity-0"
-        enter-to-class="opacity-25"
-        leave-active-class="transition-fast"
-        leave-class="opacity-25"
-        leave-to-class="opacity-0"
-        mode="out-in">
-        <div class="fixed top-0 left-0 w-screen h-screen bg-black opacity-50 z-40" v-if="modalIsOpen" @click="modalIsOpen = false"></div>
-      </transition>
+      <create-edit-modal v-if="modalIsOpen" @newBucket="addNewBucket" @close="modalIsOpen = false"/>
     </template>
 
     <template v-else>Loading...</template>
@@ -194,10 +174,11 @@
 <script>
   import BucketListItem from "./BucketListItem";
   import CreateEditModal from "./CreateEditModal";
+  import Modal from "../Shared/Modal";
 
   export default {
     name: "Buckets",
-    components: {CreateEditModal, BucketListItem},
+    components: {Modal, CreateEditModal, BucketListItem},
     data() {
       return {
         loading: true,

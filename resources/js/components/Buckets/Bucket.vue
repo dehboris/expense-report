@@ -6,8 +6,8 @@
 
       <div class="flex">
         <router-link class="text-red-800 mr-auto hover:underline" to="/">Back</router-link>
-        <button class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-3" @click="modalIsOpen = true">Edit</button>
-        <button class="font-bold bg-red-600 text-gray-100 rounded px-2 transition-fast hover:bg-red-700">Delete</button>
+        <button class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-3" @click="editModalIsOpen = true">Edit</button>
+        <button class="font-bold bg-red-600 text-gray-100 rounded px-2 transition-fast hover:bg-red-700" @click="deleteModalIsOpen = true">Delete</button>
       </div>
     </div>
 
@@ -85,43 +85,38 @@
       </template>
     </div>
 
-    <transition
-        enter-active-class="transition-fast"
-        enter-class=" opacity-0 -mt-16"
-        enter-to-class="opacity-100"
-        leave-active-class="transition-fast"
-        leave-class="opacity-100"
-        leave-to-class="opacity-0 -mt-16"
-        mode="out-in">
-      <create-edit-modal v-if="modalIsOpen" :bucket="bucket" @updateBucket="updateBucket" @close="modalIsOpen = false"/>
-    </transition>
+    <create-edit-modal v-if="editModalIsOpen" :bucket="bucket" @updateBucket="updateBucket" @close="editModalIsOpen = false"/>
 
-    <transition
-        enter-active-class="transition-fast"
-        enter-class=" opacity-0"
-        enter-to-class="opacity-25"
-        leave-active-class="transition-fast"
-        leave-class="opacity-25"
-        leave-to-class="opacity-0"
-        mode="out-in">
-      <div class="fixed top-0 left-0 w-screen h-screen bg-black opacity-50 z-40" v-if="modalIsOpen" @click="modalIsOpen = false"></div>
-    </transition>
+    <modal v-if="deleteModalIsOpen" @closeModal="deleteModalIsOpen = false">
+      <template v-slot:header>Deleting Bucket</template>
+      <template v-slot:body>Are you sure you want to delete this bucket? All items related to it will also be deleted.</template>
+      <template v-slot:footer>
+        <button class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-auto" @click="deleteModalIsOpen = false" :disabled="deleting">Cancel</button>
+        <button class="text-red-700 transition-fast hover:underline" @click="deleteBucket" :disabled="deleting">
+          Delete
+        </button>
+      </template>
+    </modal>
+
   </div>
 </template>
 
 <script>
   import CreateEditModal from "./CreateEditModal";
   import BucketExpenseItem from "./BucketExpenseItem";
+  import Modal from "../Shared/Modal";
 
   const numeral = require('numeral');
 
   export default {
     name: "Bucket",
-    components: {BucketExpenseItem, CreateEditModal},
+    components: {Modal, BucketExpenseItem, CreateEditModal},
     data() {
       return {
         loading: true,
-        modalIsOpen: false,
+        editModalIsOpen: false,
+        deleteModalIsOpen: false,
+        deleting: false,
         bucket: {},
         calculated_balance: null,
 
@@ -212,6 +207,22 @@
           this.calculated_balance = this.calculated_balance.add(item.amount.amount / 100);
         }
       },
+
+      deleteBucket() {
+        this.deleting = true;
+
+        axios.delete(route('api.expense-report.buckets.destroy', this.bucket.id))
+          .then(() => {
+            this.$emit('flash', 'success', 'Bucket deleted successfully');
+            this.deleting = false;
+            this.$router.push('/');
+          })
+          .catch(() => {
+            this.deleting = false;
+            this.$emit('flash', 'danger', 'We\'re experiencing problems trying to delete this bucket.');
+            this.deleteModalIsOpen = false;
+          })
+      }
     },
   }
 </script>
