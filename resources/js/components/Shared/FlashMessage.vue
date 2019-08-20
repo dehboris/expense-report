@@ -66,18 +66,9 @@
     },
 
     methods: {
-      setClasses() {
-        if (this.status === 'success') {
-          this.type = 'green';
-        } else if (this.status === 'danger') {
-          this.type = 'red';
-        } else if (this.status === 'warning') {
-          this.type = 'yellow';
-        } else {
-          this.type = 'blue';
-        }
-      },
-
+      /**
+       * Hide the component
+       */
       hide() {
         this.$emit('hide');
         this.showAlert = false;

@@ -29,6 +29,10 @@
     },
 
     methods: {
+      /**
+       * Delete an item from the server
+       * @return void
+       */
       removeItem() {
         axios.delete(route('api.expense-report.buckets.items.destroy', this.item.id))
           .then(() => {

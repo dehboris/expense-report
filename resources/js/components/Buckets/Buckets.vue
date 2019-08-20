@@ -194,6 +194,10 @@
     },
 
     methods: {
+      /**
+       * Fetch user's buckets from server
+       * @return void
+       */
       fetchData() {
         this.loading = true;
 
@@ -208,6 +212,11 @@
           })
       },
 
+      /**
+       * Add bucket to the list of buckets - event triggered in CreateEditModal
+       * @param bucket
+       * @return void
+       */
       addNewBucket(bucket) {
         if (this.buckets.current_page === 1) {
           this.buckets.data.unshift(bucket);

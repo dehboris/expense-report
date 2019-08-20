@@ -44,19 +44,5 @@
 <script>
   export default {
     name: "Modal",
-
-    // data() {
-    //   return {
-    //     isOpen: false,
-    //   }
-    // },
-    //
-    // created() {
-    //   this.isOpen = true;
-    // },
-    //
-    // beforeDestroy() {
-    //   this.isOpen = false;
-    // },
   }
 </script>

@@ -141,6 +141,11 @@
     },
 
     methods: {
+      /**
+       * Fetch bucket and bucket items from server
+       * @param id
+       * @return void
+       */
       fetchData(id) {
         this.loading = true;
 
@@ -159,19 +164,38 @@
           })
       },
 
+      /**
+       * Prepare axios to fetch bucket from server
+       * @param id
+       * @return {*}
+       */
       fetchBucket(id) {
         return axios(route('api.expense-report.buckets.show', id).url());
       },
 
+      /**
+       * Prepare axios to fetch bucket items from server
+       * @param id
+       * @return {*}
+       */
       fetchBucketItems(id) {
         return axios(route('api.expense-report.buckets.items.index', id).url());
       },
 
+      /**
+       * Updated bucket name and description - event triggers in edit modal
+       * @param bucket
+       * @return void
+       */
       updateBucket(bucket) {
         this.bucket.name = bucket.name;
         this.bucket.description = bucket.description;
       },
 
+      /**
+       * Create a new expense item for the bucket
+       * @return void
+       */
       createExpenseItem() {
         this.form.submitting = true;
         axios.post(route('api.expense-report.buckets.items.store', this.bucket.id), {
@@ -197,6 +221,11 @@
           })
       },
 
+      /**
+       * Remove expense item from list of items - event triggered in BucketExpenseItems
+       * @param item
+       * @return void
+       */
       removeExpenseItem(item) {
         const index = this.bucket.items.data.findIndex(el => {
           return parseInt(el.id) === parseInt(item.id);
@@ -210,6 +239,10 @@
         }
       },
 
+      /**
+       * Delete a bucket
+       * @return void
+       */
       deleteBucket() {
         this.deleting = true;
 

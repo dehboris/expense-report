@@ -59,6 +59,10 @@
     },
 
     methods: {
+      /**
+       * Close modal and reset values
+       * @return void
+       */
       close() {
         if (!this.submitting) {
           this.name = null;
@@ -68,12 +72,20 @@
         }
       },
 
+      /**
+       * Start the submission process - triggers create or update requests
+       * @return void
+       */
       submit() {
         this.submitting = true;
 
         Object.keys(this.bucket).length > 0 ? this.updateBucket() : this.createBucket();
       },
 
+      /**
+       * Creates a new bucket
+       * @return void
+       */
       createBucket() {
         axios.post(route('api.expense-report.buckets.store').url(), {
           name: this.name,
@@ -98,6 +110,10 @@
           })
       },
 
+      /**
+       * Updates a bucket
+       * @return void
+       */
       updateBucket() {
         axios.patch(route('api.expense-report.buckets.update', this.bucket.id).url(), {
           name: this.name,
