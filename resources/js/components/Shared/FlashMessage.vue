@@ -59,7 +59,6 @@
     },
 
     created() {
-      this.setClasses();
       setTimeout(() => {
         this.hide();
       }, 4000)
