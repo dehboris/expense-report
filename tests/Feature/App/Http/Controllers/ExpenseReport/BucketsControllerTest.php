@@ -20,36 +20,43 @@ class BucketsControllerTest extends TestCase
     }
 
     /** @test */
-    public function only_logged_in_users_can_access_buckets()
+    public function api_routes_can_only_be_accessed_via_json_requests()
     {
         $this->withExceptionHandling();
 
-        $this->get(route('expense-report.buckets.index'))
-            ->assertRedirect('/login');
+        $this->be(factory(User::class)->create());
+        $bucket = factory(Bucket::class)->create();
 
-        $this->get(route('expense-report.buckets.create'))
-            ->assertRedirect('/login');
+        $this->get(route('api.expense-report.buckets.index'))
+            ->assertNotFound();
 
-        $this->post(route('expense-report.buckets.store'))
-            ->assertRedirect('/login');
+        $this->get(route('api.expense-report.buckets.show', $bucket))
+            ->assertNotFound();
+
+        $this->post(route('api.expense-report.buckets.store'))
+            ->assertNotFound();
+
+        $this->patch(route('api.expense-report.buckets.update', $bucket))
+            ->assertNotFound();
+
+        $this->delete(route('api.expense-report.buckets.destroy', $bucket))
+            ->assertNotFound();
     }
 
     /** @test */
     public function user_can_create_bucket()
     {
         $this->be($user = factory(User::class)->create());
-
         $bucket = factory(Bucket::class)->make();
 
-        $this->get(route('expense-report.buckets.create'))
-            ->assertViewIs('expense-report.buckets.create')
-            ->assertOk();
-
-        $this->post(route('expense-report.buckets.store'), $bucket->toArray())
-            ->assertRedirect(route('expense-report.buckets.index'))
-            ->assertSessionHas('flash', [
-                'type' => 'success',
-                'message' => 'Bucket created successfully',
+        $this->json('POST', route('api.expense-report.buckets.store'), $bucket->toArray())
+            ->assertOk()
+            ->assertJson([
+                'status' => 'ok',
+                'data' => [
+                    'name' => $bucket->name,
+                    'description' => $bucket->description,
+                ],
             ]);
 
         $this->assertDatabaseHas('expense_report_buckets', [
@@ -66,42 +73,65 @@ class BucketsControllerTest extends TestCase
         $this->be($jon = factory(User::class)->create());
 
         $jons_buckets = [
-            factory(Bucket::class)->create(['user_id' => $jon->id]),
-            factory(Bucket::class)->create(['user_id' => $jon->id]),
+            factory(Bucket::class)->create(['user_id' => $jon->id, 'created_at' => now()->subWeek()]),
+            factory(Bucket::class)->create(['user_id' => $jon->id, 'created_at' => now()->subDay()]),
             factory(Bucket::class)->create(['user_id' => $jon->id]),
         ];
 
         $janes_buckets = [
-            factory(Bucket::class)->create(['user_id' => $jane->id]),
-            factory(Bucket::class)->create(['user_id' => $jane->id]),
+            factory(Bucket::class)->create(['user_id' => $jane->id, 'created_at' => now()->subWeek()]),
+            factory(Bucket::class)->create(['user_id' => $jane->id, 'created_at' => now()->subDay()]),
             factory(Bucket::class)->create(['user_id' => $jane->id]),
         ];
 
-        $this->get(route('expense-report.buckets.index'))
+        $this->json('GET', route('api.expense-report.buckets.index'))
             ->assertOk()
-            ->assertViewIs('expense-report.buckets.index')
-            ->assertSee($jons_buckets[0]->name)
-            ->assertSee($jons_buckets[1]->name)
-            ->assertSee($jons_buckets[2]->name)
-            ->assertDontSee($janes_buckets[0]->name)
-            ->assertDontSee($janes_buckets[1]->name)
-            ->assertDontSee($janes_buckets[2]->name);
+            ->assertJson([
+                'data' => [
+                    [
+                        'name' => $jons_buckets[2]->name,
+                        'description' => $jons_buckets[2]->description,
+                    ],
+                    [
+                        'name' => $jons_buckets[1]->name,
+                        'description' => $jons_buckets[1]->description,
+                    ],
+                    [
+                        'name' => $jons_buckets[0]->name,
+                        'description' => $jons_buckets[0]->description,
+                    ],
+                ],
+            ])
+            ->assertJsonMissing([
+                'data' => [
+                    [
+                        'name' => $janes_buckets[2]->name,
+                        'description' => $janes_buckets[2]->description,
+                    ],
+                    [
+                        'name' => $janes_buckets[1]->name,
+                        'description' => $janes_buckets[1]->description,
+                    ],
+                    [
+                        'name' => $janes_buckets[0]->name,
+                        'description' => $janes_buckets[0]->description,
+                    ],
+                ],
+            ]);
     }
 
     /** @test */
     public function user_cannot_view_other_users_buckets()
     {
+        $this->withExceptionHandling();
+
         $jane = factory(User::class)->create();
         $this->be($jon = factory(User::class)->create());
 
         $janes_bucket =factory(Bucket::class)->create(['user_id' => $jane->id]);
 
-        $this->get(route('expense-report.buckets.show', $janes_bucket))
-            ->assertRedirect(route('expense-report.buckets.index'))
-            ->with('flash', [
-                'type' => 'danger',
-                'message' => 'You do not have access to that bucket'
-            ]);
+        $this->json('GET', route('api.expense-report.buckets.show', $janes_bucket))
+            ->assertForbidden();
     }
 
     /** @test */
@@ -111,53 +141,48 @@ class BucketsControllerTest extends TestCase
 
         $jons_bucket = factory(Bucket::class)->create(['user_id' => $jon->id]);
 
-        $this->get(route('expense-report.buckets.show', $jons_bucket))
+        $this->json('GET', route('api.expense-report.buckets.show', $jons_bucket))
             ->assertOk()
-            ->assertViewIs('expense-report.buckets.show');
+            ->assertJson([
+                'data' => [
+                    'name' => $jons_bucket->name,
+                    'description' => $jons_bucket->description,
+                ],
+            ]);
     }
 
     /** @test */
     public function user_cannot_edit_other_users_buckets()
     {
+        $this->withExceptionHandling();
+
         $jane = factory(User::class)->create();
         $this->be($jon = factory(User::class)->create());
 
         $janes_bucket =factory(Bucket::class)->create(['user_id' => $jane->id]);
 
-        $this->get(route('expense-report.buckets.edit', $janes_bucket))
-            ->assertRedirect(route('expense-report.buckets.index'))
-            ->with('flash', [
-                'type' => 'danger',
-                'message' => 'You do not have access to that bucket'
-            ]);
-
-        $this->patch(route('expense-report.buckets.update', $janes_bucket))
-            ->assertRedirect(route('expense-report.buckets.index'))
-            ->with('flash', [
-                'type' => 'danger',
-                'message' => 'You do not have access to that bucket'
-            ]);
+        $this->json('PATCH', route('api.expense-report.buckets.update', $janes_bucket))
+            ->assertForbidden();
     }
 
     /** @test */
-    public function user_can_update_buckets()
+    public function user_can_update_own_buckets()
     {
         $this->be($jon = factory(User::class)->create());
 
         $jons_bucket = factory(Bucket::class)->create(['user_id' => $jon->id]);
 
-        $this->get(route('expense-report.buckets.edit', $jons_bucket))
-            ->assertOk()
-            ->assertViewIs('expense-report.buckets.edit');
-
-        $this->patch(route('expense-report.buckets.update', $jons_bucket), [
+        $this->json('PATCH', route('api.expense-report.buckets.update', $jons_bucket), [
             'name' => 'New Name',
             'description' => $jons_bucket->description,
         ])
-            ->assertRedirect(route('expense-report.buckets.show', $jons_bucket))
-            ->assertSessionHas('flash', [
-                'type' => 'success',
-                'message' => 'Bucket updated successfully'
+            ->assertOk()
+            ->assertJson([
+                'status' => 'ok',
+                'data' => [
+                    'name' => 'New Name',
+                    'description' => $jons_bucket->description,
+                ],
             ]);
 
         $this->assertDatabaseHas('expense_report_buckets', [
@@ -170,17 +195,15 @@ class BucketsControllerTest extends TestCase
     /** @test */
     public function user_cannot_delete_other_users_buckets()
     {
+        $this->withExceptionHandling();
+
         $jane = factory(User::class)->create();
         $this->be($jon = factory(User::class)->create());
 
         $janes_bucket =factory(Bucket::class)->create(['user_id' => $jane->id]);
 
-        $this->delete(route('expense-report.buckets.destroy', $janes_bucket))
-            ->assertRedirect(route('expense-report.buckets.index'))
-            ->with('flash', [
-                'type' => 'danger',
-                'message' => 'You do not have access to that bucket'
-            ]);
+        $this->json('DELETE', route('api.expense-report.buckets.destroy', $janes_bucket))
+            ->assertForbidden();
     }
 
     /** @test */
@@ -190,11 +213,10 @@ class BucketsControllerTest extends TestCase
 
         $jons_bucket =factory(Bucket::class)->create(['user_id' => $jon->id]);
 
-        $this->delete(route('expense-report.buckets.destroy', $jons_bucket))
-            ->assertRedirect(route('expense-report.buckets.index'))
-            ->with('flash', [
-                'type' => 'success',
-                'message' => 'Bucket deleted successfully',
+        $this->json('DELETE', route('api.expense-report.buckets.destroy', $jons_bucket))
+            ->assertOk()
+            ->assertJson([
+                'status' => 'ok',
             ]);
 
         $this->assertDatabaseMissing('expense_report_buckets', [

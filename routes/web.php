@@ -11,10 +11,8 @@
 |
 */
 
-use App\Http\Controllers\ExpenseReport\BucketsController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SpaController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::namespace('App\Http\Controllers')->group(function() {
     Auth::routes();
@@ -23,43 +21,4 @@ Route::namespace('App\Http\Controllers')->group(function() {
 /**
  * Authenticated routes
  */
-//Route::group(['middleware' => 'auth'], function() {
-//    /**
-//     * Home Route
-//     */
-//    Route::get('/', HomeController::class)->name('home');
-//
-//
-//    /**
-//     * Expense Report Routes
-//     * @routeName expense-report.
-//     */
-//    Route::group([
-//        'as' => 'expense-report.',
-//    ], function() {
-//        /**
-//         * Expense Report Bucket Routes
-//         * @routeName buckets.
-//         * @routePrefix buckets/
-//         */
-//        Route::resource('buckets', BucketsController::class);
-//    });
-//});
-
-
-Route::group(['middleware' => 'auth'], function() {
-
-    Route::group(['as' => 'expense-report.'], function() {
-        Route::livewire('', 'expense-report.buckets.index')->name('buckets.index');
-
-        Route::group([
-            'as' => 'buckets.',
-            'prefix' => 'buckets',
-        ], function() {
-            Route::livewire('create', 'expense-report.buckets.create')->name('create');
-            Route::livewire('{bucket}/edit', 'expense-report.buckets.edit')->name('edit');
-            Route::livewire('{bucket}', 'expense-report.buckets.show')->name('show');
-        });
-    });
-
-});
+Route::get('{any}', SpaController::class)->where('any', '.*')->middleware('auth')->name('spa');

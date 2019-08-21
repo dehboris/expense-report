@@ -5,32 +5,18 @@ namespace App\Http\Controllers\ExpenseReport;
 use App\ExpenseReport\Bucket;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BucketsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view('expense-report.buckets.index')
-            ->with([
-                'buckets' => $request->user()->buckets,
-            ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('expense-report.buckets.create');
+        return response()->json(Auth::user()->buckets()->orderByDesc('created_at')->paginate(), 200);
     }
 
     /**
@@ -46,63 +32,32 @@ class BucketsController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        Bucket::create(array_merge(
+        $bucket = Bucket::create(array_merge(
             [ 'user_id' => $request->user()->id ],
             $request->only('name', 'description')
         ));
 
-        return redirect(route('expense-report.buckets.index'))
-            ->with('flash', [
-                'type' => 'success',
-                'message' => 'Bucket created successfully',
-            ]);
+        return response()->json([
+            'status' => 'ok',
+            'data' => $bucket,
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\ExpenseReport\Bucket  $bucket
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(Request $request, Bucket $bucket)
+    public function show(Bucket $bucket)
     {
-        if ((int) $bucket->user_id !== (int) $request->user()->id) {
-            return redirect(route('expense-report.buckets.index'))
-                ->with('flash', [
-                    'type' => 'danger',
-                    'message' => 'You do not have access to that bucket',
-                ]);
-        }
+        $this->authorize('view', $bucket);
 
-        return view('expense-report.buckets.show', [
-            'bucket' => $bucket,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpenseReport\Bucket  $bucket
-     *
-     * @return void
-     */
-    public function edit(Request $request, Bucket $bucket)
-    {
-        if ((int) $bucket->user_id !== (int) $request->user()->id) {
-            return redirect(route('expense-report.buckets.index'))
-                ->with('flash', [
-                    'type' => 'danger',
-                    'message' => 'You do not have access to that bucket',
-                ]);
-        }
-
-        return view('expense-report.buckets.edit')
-            ->with([
-                'bucket' => $bucket,
-            ]);
+        return response()->json([
+            'data' => $bucket,
+        ], 200);
     }
 
     /**
@@ -110,17 +65,13 @@ class BucketsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\ExpenseReport\Bucket  $bucket
+     *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, Bucket $bucket)
     {
-        if ((int) $bucket->user_id !== (int) $request->user()->id) {
-            return redirect(route('expense-report.buckets.index'))
-                ->with('flash', [
-                    'type' => 'danger',
-                    'message' => 'You do not have access to that bucket',
-                ]);
-        }
+        $this->authorize('update', $bucket);
 
         $request->validate([
             'name' => 'required|string|max:100',
@@ -129,38 +80,28 @@ class BucketsController extends Controller
 
         $bucket->update($request->only(['name', 'description']));
 
-        return redirect(route('expense-report.buckets.show', $bucket))
-            ->with('flash', [
-                'type' => 'success',
-                'message' => 'Bucket updated successfully',
-            ]);
+        return response()->json([
+            'status' => 'ok',
+            'data' => $bucket,
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\ExpenseReport\Bucket  $bucket
      *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Request $request, Bucket $bucket)
+    public function destroy(Bucket $bucket)
     {
-        if ((int) $bucket->user_id !== (int) $request->user()->id) {
-            return redirect(route('expense-report.buckets.index'))
-                ->with('flash', [
-                    'type' => 'danger',
-                    'message' => 'You do not have access to that bucket',
-                ]);
-        }
+        $this->authorize('delete', $bucket);
 
         $bucket->delete();
 
-        return redirect(route('expense-report.buckets.index'))
-            ->with('flash', [
-                'type' => 'success',
-                'message' => 'Bucket deleted successfully'
-            ]);
+        return response()->json([
+            'status' => 'ok',
+        ], 200);
     }
 }
