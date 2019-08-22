@@ -214,6 +214,7 @@
             this.form.name = '';
             this.form.amount = '';
             this.form.type = 'debit';
+            this.form.errors = {};
           })
           .catch(error => {
             this.form.errors = error.response.data.errors;
