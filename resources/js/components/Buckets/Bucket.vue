@@ -4,7 +4,7 @@
       <h1 class="text-3xl text-center -mb-4">{{ bucket.name }}</h1>
       <p class="text-xl font-semibold text-gray-600 text-center">{{ bucket.description }}</p>
 
-      <div class="flex">
+      <div class="flex px-4 mt-3 sm:px-0 sm:mt-0">
         <router-link class="text-red-800 mr-auto hover:underline" to="/">Back</router-link>
         <button class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-3" @click="editModalIsOpen = true">Edit</button>
         <button class="font-bold bg-red-600 text-gray-100 rounded px-2 transition-fast hover:bg-red-700" @click="deleteModalIsOpen = true">Delete</button>
