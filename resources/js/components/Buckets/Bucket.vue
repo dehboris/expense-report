@@ -4,7 +4,7 @@
       <h1 class="text-3xl text-center -mb-4">{{ bucket.name }}</h1>
       <p class="text-xl font-semibold text-gray-600 text-center">{{ bucket.description }}</p>
 
-      <div class="flex">
+      <div class="flex px-4 mt-3 sm:px-0 sm:mt-0">
         <router-link class="text-red-800 mr-auto hover:underline" to="/">Back</router-link>
         <button class="font-bold bg-yellow-600 text-gray-100 rounded px-2 transition-fast hover:bg-yellow-700 mr-3" @click="editModalIsOpen = true">Edit</button>
         <button class="font-bold bg-red-600 text-gray-100 rounded px-2 transition-fast hover:bg-red-700" @click="deleteModalIsOpen = true">Delete</button>
@@ -20,20 +20,20 @@
             <p v-if="form.errors.name !== undefined" class="text-xs text-red-600 mt-1">{{ form.errors.name[0] }}</p>
         </div>
 
-        <div class="w-full mb-6 md:w-2/12 md:px-3 md:mb-0 xl:w-3/12">
+        <div class="w-1/2 pr-2 mb-6 md:w-2/12 md:px-3 md:mb-0 xl:w-3/12">
           <label for="amount" class="block font-semibold">Amount:</label>
           <input type="text" id="amount" :class="['input', { 'border-red-500': form.errors.amount !== undefined }]" placeholder="245.99" v-model="form.amount">
 
           <p v-if="form.errors.amount !== undefined" class="text-xs text-red-600 mt-1">{{ form.errors.amount[0] }}</p>
         </div>
 
-        <div class="w-full flex flex-wrap self-center mb-6 md:w-2/12 md:px-3 md:mb-0">
-          <label for="credit" class="w-full block">
+        <div class="w-1/2 pl-2 flex flex-wrap self-end sm:self-center mb-6 md:w-2/12 md:px-3 md:mb-0">
+          <label for="credit" class="w-1/2 block">
             <input type="radio" name="type" id="credit" value="credit" v-model="form.type">
             Credit
           </label>
 
-          <label for="debit" class="w-full block">
+          <label for="debit" class="w-1/2 block">
             <input type="radio" name="type" id="debit" value="debit" v-model="form.type">
             Debit
           </label>

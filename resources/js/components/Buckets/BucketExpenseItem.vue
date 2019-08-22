@@ -4,10 +4,10 @@
       <span class="font-bold sm:hidden text-gray-900">Name:</span>
       <span>{{ item.name }}</span>
     </div>
-    <div class="w-full flex self-center justify-between pl-10 sm:w-2/12 sm:text-right">
-      <span class="font-bold sm:hidden">Amount:</span>
+    <div class="w-full flex self-center sm:justify-between sm:pl-10 sm:w-2/12 sm:text-right">
+      <span class="inline-block font-bold mr-auto sm:hidden">Amount:</span>
       <span>$</span>
-      <span :class="['tracking-wide', item.type.toString() === 'debit' ? 'text-red-700' : 'text-green-700']">
+      <span :class="['inline-block ml-5 tracking-wide', item.type.toString() === 'debit' ? 'text-red-700' : 'text-green-700']">
             {{ item.amount.formatted.replace(/\$*/g, '') }}
         </span>
     </div>
