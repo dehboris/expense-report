@@ -15,14 +15,14 @@
       <div role="form" class="w-full flex flex-wrap border-b-2 border-gray-400 pb-6 mb-3">
         <div class="w-full mb-3 md:w-5/12 md:px-3 md:mb-0">
           <label for="name" class="block font-semibold">Title:</label>
-          <input type="text" id="name" class="input" placeholder="Jerseys" v-model="form.name">
+          <input type="text" id="name" :class="['input', { 'border-red-500': form.errors.name !== undefined }]" placeholder="Jerseys" v-model="form.name">
 
             <p v-if="form.errors.name !== undefined" class="text-xs text-red-600 mt-1">{{ form.errors.name[0] }}</p>
         </div>
 
         <div class="w-full mb-6 md:w-2/12 md:px-3 md:mb-0 xl:w-3/12">
           <label for="amount" class="block font-semibold">Amount:</label>
-          <input type="text" id="amount" class="input" placeholder="245.99" v-model="form.amount">
+          <input type="text" id="amount" :class="['input', { 'border-red-500': form.errors.amount !== undefined }]" placeholder="245.99" v-model="form.amount">
 
           <p v-if="form.errors.amount !== undefined" class="text-xs text-red-600 mt-1">{{ form.errors.amount[0] }}</p>
         </div>
