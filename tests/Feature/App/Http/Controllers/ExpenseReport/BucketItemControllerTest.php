@@ -176,4 +176,38 @@ class BucketItemControllerTest extends TestCase
             'amount' => $bucket_item->amount,
         ]);
     }
+
+    /** @test */
+    public function values_less_than_zero_gets_trimmed()
+    {
+        $this->be($user = factory(User::class)->create());
+        $bucket = factory(Bucket::class)->create(['user_id' => $user->id]);
+
+        $this->json('POST', route('api.expense-report.buckets.items.store', $bucket), [
+            'name' => 'Test',
+            'amount' => '0.99',
+            'type' => 'credit',
+        ])
+            ->assertOk()
+            ->assertJson([
+                'status' => 'ok',
+                'data' => [
+                    'bucket_id' => $bucket->id,
+                    'name' => 'Test',
+                    'amount' => [
+                        'amount' => '99',
+                        'currency' => 'USD',
+                        'formatted' => '$0.99',
+                    ],
+                    'type' => 'credit',
+                ],
+            ]);
+
+        $this->assertDatabaseHas('expense_report_bucket_items', [
+            'bucket_id' => $bucket->id,
+            'name' => 'Test',
+            'amount' => '99',
+            'type' => 'credit',
+        ]);
+    }
 }

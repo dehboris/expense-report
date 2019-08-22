@@ -50,7 +50,7 @@ class BucketItemsController extends Controller
         $bucket_item = BucketItem::create([
             'bucket_id' => $bucket->id,
             'name' => $request->get('name'),
-            'amount' => str_replace('.', '', $request->get('amount')),
+            'amount' => ltrim(str_replace('.', '', $request->get('amount')), '0'),
             'type' => $request->get('type'),
         ]);
 
